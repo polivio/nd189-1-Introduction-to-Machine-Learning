@@ -1,0 +1,121 @@
+{
+  "metadata": {
+    "version": 1,
+    "disable_limits": false
+  },
+  "nodes": [
+    {
+      "node_id": "7898f7d8-1336-493b-b489-97a8c39b714c",
+      "type": "SOURCE",
+      "operator": "sagemaker.s3_source_0.1",
+      "parameters": {
+        "dataset_definition": {
+          "__typename": "S3CreateDatasetDefinitionOutput",
+          "datasetSourceType": "S3",
+          "name": "data.csv",
+          "description": null,
+          "s3ExecutionContext": {
+            "__typename": "S3ExecutionContext",
+            "s3Uri": "s3://sagemaker-studio-343501416142-wp5xn1degv/data.csv",
+            "s3ContentType": "csv",
+            "s3HasHeader": true,
+            "s3FieldDelimiter": ",",
+            "s3DirIncludesNested": false,
+            "s3AddsFilenameColumn": false
+          }
+        }
+      },
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "default",
+          "sampling": {
+            "sampling_method": "sample_by_limit",
+            "limit_rows": 50000
+          }
+        }
+      ]
+    },
+    {
+      "node_id": "fde6a8ea-d34f-4594-b6f4-4ac5c649c3e0",
+      "type": "TRANSFORM",
+      "operator": "sagemaker.spark.infer_and_cast_type_0.1",
+      "parameters": {},
+      "trained_parameters": {
+        "schema": {
+          "a": "long",
+          "b": "string",
+          "c": "long"
+        }
+      },
+      "inputs": [
+        {
+          "name": "default",
+          "node_id": "7898f7d8-1336-493b-b489-97a8c39b714c",
+          "output_name": "default"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "default"
+        }
+      ]
+    },
+    {
+      "node_id": "fb57640d-c7bf-4b3d-9342-486d8c87df98",
+      "type": "TRANSFORM",
+      "operator": "sagemaker.spark.encode_categorical_0.1",
+      "parameters": {
+        "operator": "One-hot encode",
+        "one_hot_encode_parameters": {
+          "invalid_handling_strategy": "Keep",
+          "drop_last": false,
+          "output_style": "Columns",
+          "input_column": "b"
+        },
+        "ordinal_encode_parameters": {
+          "invalid_handling_strategy": "Replace with NaN"
+        }
+      },
+      "trained_parameters": {
+        "one_hot_encode_parameters": {
+          "_hash": -1767228197713558300,
+          "string_indexer_model": "P)h>@6aWAK2mtt_F;sWsQ^(r?003VB000vJ003=ebYWy+bYU-WVRCdWFfcGMFnx|sOT$1A#qWNMIj2j~q=odVmmZ3O;x&xBlQwk!IlC*?lJD*iK~T`!yqWiY^RA#RrUW|(d{h`wpGc*Md{)k?kuVn~^_Y3`$Gtc7PJ9T4EL4yuM=7I=uxqy6y4y6Hx^J7lf+hb<oTlJ~+^SmDD|8=zRZFf+MwUO2L*I5?i(50U$%sYr=ng34E1b|9OMCx@b_t$|qF5#$OTG<OHZLMW$=^DYi-VSNuE5ZU#pZ{9fW#bF5NT<2&xZKv5=ky2(`zBGFL#vmuP1-^ABHa<%=67BP)h>@6aWAK2mtt_F;qK`9m@^?000aC000;O003=ebYWy+bYU+paA9(EEif=JFfcA-a$`#_N@ieSU}88P{J0zdP)h>@6aWAK2mtt_F;pF7oXm~^004Lb002k;003lRbYU-WVRCdWFfcGMFfBJ@WHvHmF=8!dHZf!^G-Wt7EjTzbGc99fFlIAkW;Zi3W;88hFfcGKb8ca9aCt6pVRCVGWps^FO=}x55Y?_7$0WYWXh8=faInD@yIp5v8((q@Jrq-VD3}tomXt2luAP;f5{$3?E%_(;TbYfW)M+Rb#4z*Te7!-l%P$c|c!p;Kd;(4bH)w)-o+h3^2=!<UZ0*6Xd&e}NBM&0s9Zl29SyV<=Mq@uPS1r2|<<D!o_@Q!veRS@VQzKGk>}6Ssd+g%|I<J$u$*kMa$I7T&74B~ex4M7GE<$ZTpaDH=Qrrr<s1bZS?E75wlKdvXe*2{T+k<!3oW80GDCk5m1^NQ%qhLVDvb^D9C17>_tb*UE(q_wo9K}53AtL>E8TQt2aBkPi@pAc#=gJ8woFI?hhPnHdViRUvxn4LnU^-JqS~i()SRwL?I#2-oF8{So?BTtTum8bTv$Em_;Kj0VA}j3YwJ~f08>sC+zybo18npuk>_r01+HSvZ5&5(i_#rPl`-^lU9)&#W^wM=^WGB>PsfV#tTBoCtmKS=IB#BJoWE_o#ALBUG!z7jCen2T)yboue!Jm5qP)h>@6aWAK2mtt_F;pf#Ic5?7000mG002z@003lRbYU+paA9(EEif=JFfc7QV`MfmV=-baW;QWoEi`2~H7z(eGBYh>WiVzlWM(%rGG;U_V=yo<E^}^SaBz7paA9(Bb!BueV{&6lE=p!#U|?d{+Bw-g;Nq<*08mQ-0u%!j000080QjRZRCnW3$J+n^0AB$B022TJ00000000000HlEc0001OWprU=VRT_HaA9(EEif=JFfdR{0Rj{Q6aWAK2mtt_F;qK`9m@^?000aC000;O0000000000005+c3;_TDZDn*}WMOn+FD`Ila&#>)FfcGME@N_IP)h*<6ay3h000O8_@gmY9b}x$jsXAwcme<bNB{r;0000000000q=8TY003lRbYU-WVRCdWFfcGMFfBJ@WHvHmF=8!dHZf!^G-Wt7EjTzbGc99fFlIAkW;Zi3W;88hFfcGKb8ca9aCt6pVRCVGWpq$W0Rj{Q6aWAK2mtt_F;pf#Ic5?7000mG002z@0000000000005+cL<0Z-WMOn+FD`Ila&#>)FfcGMEjMFiHZo%|Vl8GiF=Q<?WjHl0I5;vhEn{UcW;0}FH#0J3G%aH=FfcB2Zeeh6c`k5aa&dKKbS`6ZV^B*41^@s600aO80C)ia0Ko$Q0000",
+          "one_hot_encoder_model": "P)h>@6aWAK2mtt_F;qNv-F(yl003zL000vJ003=ebYWy+bYU-WVRCdWFfcGMFm;YiO9L?whVTB2Id4PSZpGcJ2o@}Q@*0NC#4hHG$;5+Y|GTlGpxDbCUf$<<=LD0-QecF{FA6hGM^YstzpCJsBb3Ud9wXf+xr<Y>#D{h~bRct}A{a7^>+62g@76m#^uy4>nSUlObBfKpRa)s4hWEJAjjOY5;V-3ey|Xu#v>R~KDvif*z-B&y<&+<=2#gMWp$<}&T;(?TW-&q`n<;toX+C1Kp7!w#{dt3!6SsVhKfre%mJTdAtX`h}9TTp9wl05c%vbN?3(Io#0Z>Z=1QY-O00;p1qcK!0r{*3G0000C0000O0001OWprU=VRT_HE^uLTbS*G2FfcGKV{&6lE=p!#U|?dXxm#`n08mQ<1QY-O00;p1qcK#CKhvUu0RR9n0ssI=0001FVRT_HaA9(EEif=JFfc7)Ib<+1HDqKhGiEt6Ei_~~FfCzXF*Pk>I5{_FW@0lpHZn0SV=yo<E^}^SaBz7paA9(Bb!BvYQeA7?FcekP%<Dt<&<7bA{15~UEx5v-6W0lSXx~aHBW!ycV<@rInaOq{DJy9k=+Ed6><{Tpla7T#CAi#=bM8G?XmtKHA&4;2jR*$EBVI_`9ztkseRTL=1ZV#YgWZ7(7Nb>`;Na?F&rXH;^UF?t%SsT8`j~#22q&)_v-notN(=2h)Nj+aF0BIq!3T(blv-A@cF4y;7=+#35SkqzFUYsaFQiv6!9Moy{fAa}_w*gDK?wW6m{sN8$0&#>ZOk<nQvo9Ri(dX$8e29s{gCpQ$A})iLD-q*;LPUIans!JN;**pC+K7Aj=9BDvLUn1%qNaTOqEg>mJNU0v07BC($*S)STp`Hg)w3Q>CI~2*V(cLk~EN?G_@0DZNJR5W<w>kmCK0L5Q(t{C=8Ynd({Mum&>0^L@zgrk1NyJtk_9-67!^UIG&ff=)`JJs9st~rN()#iW8M*Syp6eHc0Z`=QNE~FB=zwqaY071)o|7jo`0515ir?1QY-O00;p1qcK#GlAO#E0000G0000@0001FVRT_HE^uLTbS*G2FfcGJVL4<lGc{ynEi-00Gc7b^IWR3@Vlg!>VmLWBW@chDH#RacEn_e+FfMa$VQ_GHE^uLTadl;ME@N_IOD;-gU|?WkNMCUB*SUXIW&lu20Rj{Q6aWAK2mtt_F;qNv-F(yl003zL000vJ0000000000005+c00000ZDn*}WMOn+FK}UUbS*G2FfcGsO928D0~7!N00;p1qcK!0r{*3G0000C0000O00000000000001_fdv5o0BvP-VPs)+VJ|LlVRCdWFfcGMFfL<qV^B*00u%!j000080QjRZRE<B=qJjYc05Ado07w7;00000000000HlFQ0RRAGVRT_HaA9(EEif=JFfc7)Ib<+1HDqKhGiEt6Ei_~~FfCzXF*Pk>I5{_FW@0lpHZn0SV=yo<E^}^SaBz7paA9(Bb!Bu=O928D0~7!N00;p1qcK#GlAO#E0000G0000@00000000000001_fiVLB0AyiwVJ|LlVRCdWFfcGMFfCy@WH2)|WMnNfW;ru0G-Nq2En#9YH7#N|IX7lzVly{3GBGV<FfcGKb8ca9aCt6pVRCVGWpplMa$`_S1qJ{B000C41ORve006E700000"
+        }
+      },
+      "inputs": [
+        {
+          "name": "df",
+          "node_id": "fde6a8ea-d34f-4594-b6f4-4ac5c649c3e0",
+          "output_name": "default"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "default"
+        }
+      ]
+    },
+    {
+      "node_id": "d6f5b941-1345-4170-8349-e515817d7dfa",
+      "type": "VISUALIZATION",
+      "operator": "sagemaker.visualizations.describe_0.1",
+      "parameters": {
+        "name": "summary"
+      },
+      "inputs": [
+        {
+          "name": "df",
+          "node_id": "fb57640d-c7bf-4b3d-9342-486d8c87df98",
+          "output_name": "default"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "default"
+        }
+      ]
+    }
+  ]
+}
